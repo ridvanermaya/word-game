@@ -24,7 +24,28 @@ export default {
   },
   data() {
     return {
-      questions: [],
+      questions: [
+        {
+          question: "On top of the house",
+          answer: "ROOF",
+          asked: false
+        },
+        {
+          question: "Usually cut in slices",
+          answer: "BREAD",
+          asked: false
+        },
+        {
+          question: "A dairy product",
+          answer: "BUTTER",
+          asked: false
+        },
+        {
+          question: "A top with long sleeves, often in wool",
+          answer: "SWEATER",
+          asked: false
+        }
+      ],
       question: "",
       answer: "",
       letters: [],
