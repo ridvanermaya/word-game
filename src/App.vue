@@ -12,14 +12,25 @@
       <div class="card-header">{{ currentQuestion.question }}</div>
       <div class="card-body">
         <div class="d-flex">
-          <div class="harf shadow" v-for="letter in letters" :key="'letter-'+letter.letter">
+          <div class="harf shadow mr-3" v-for="(letter, index) in letters" :key="'letter-'+index">
             <span v-if="letter.shown">{{ letter.letter }}</span>
             <span v-else></span>
           </div>
         </div>
       </div>
+      <div class="card-footer">Word Score: {{ letterScore }}</div>
+      <div class="card-footer">Total Score: {{ score }}</div>
       <div class="card-footer">
-        Functions
+        <p>
+          <input type="text" class="form-control" placeholder="Type your answer" v-model="playerAnswer">
+        </p>
+        <p>
+          Your Answer: {{ playerAnswer}}
+        </p>
+        <button @click="answer">Answer</button>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-secondary" @click="giveLetter">Give Hint</button>
       </div>
     </div>
   </div>
@@ -58,7 +69,8 @@ export default {
       currentQuestion: null,
       letters: [],
       score: 0,
-      letterScore: 0
+      letterScore: 0,
+      playerAnswer: ""
     }
   },
   methods: {
@@ -71,6 +83,27 @@ export default {
           shown: false
         });
       });
+      this.letterScore = this.letters.length * 100;
+    },
+    giveLetter() {
+      let randomLetterIndex = Math.floor(Math.random() * this.letters.length);
+
+      if(this.letterScore <= 100) {
+        return;
+      }
+
+      let letter = this.letters[randomLetterIndex];
+
+      while (letter.shown) {
+        randomLetterIndex = Math.floor(Math.random() * this.letters.length);
+        letter = this.letters[randomLetterIndex];
+      }
+
+      letter.shown = true;
+      this.letterScore -= 100;
+    },
+    answer() {
+      alert(this.playerAnswer);
     }
   }
 }
