@@ -1,12 +1,21 @@
 <template>
   <div id="app" class="container">
-    <div class="card mt-4">
-      <div class="card-header">
-        Question
-      </div>
+    <div class="card mt-4" v-if="!currentQuestion">
       <div class="card-body">
-        <div class="harf shadow">
-          <span>X</span>
+        To start the game please click "Start Game" button.
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-primary" @click="startGame">Start Game</button>
+      </div>
+    </div>
+    <div class="card mt-4" v-else>
+      <div class="card-header">{{ currentQuestion.question }}</div>
+      <div class="card-body">
+        <div class="d-flex">
+          <div class="harf shadow" v-for="letter in letters" :key="'letter-'+letter.letter">
+            <span v-if="letter.shown">{{ letter.letter }}</span>
+            <span v-else></span>
+          </div>
         </div>
       </div>
       <div class="card-footer">
@@ -46,11 +55,22 @@ export default {
           asked: false
         }
       ],
-      question: "",
-      answer: "",
+      currentQuestion: null,
       letters: [],
       score: 0,
       letterScore: 0
+    }
+  },
+  methods: {
+    startGame() {
+      this.currentQuestion = this.questions.find(x => !x.asked);
+      this.letters = [];
+      this.currentQuestion.answer.split("").map(x => {
+        this.letters.push({
+          letter: x,
+          shown: false
+        });
+      });
     }
   }
 }
